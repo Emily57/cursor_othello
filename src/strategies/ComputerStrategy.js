@@ -143,6 +143,10 @@ export class AdvancedStrategy extends BaseStrategy {
         // 終盤: 石の数を重視
         score += captureScore * 2;
         break;
+      default:
+        // 予期せぬフェーズの場合は通常の評価を使用
+        score += captureScore;
+        break;
     }
 
     // 5. パリティ（奇数・偶数）の考慮

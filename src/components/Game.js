@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { AdvancedStrategy } from "../strategies/ComputerStrategy";
 import "../styles/Game.css";
 
@@ -17,7 +17,7 @@ const Game = () => {
   const [board, setBoard] = useState(createInitialBoard());
   const [isBlackTurn, setIsBlackTurn] = useState(true);
   const [isGameOver, setIsGameOver] = useState(false);
-  const computerStrategy = new AdvancedStrategy();
+  const computerStrategy = useMemo(() => new AdvancedStrategy(), []);
 
   const getValidMoves = (board, isBlack) => {
     const validMoves = [];
@@ -132,7 +132,7 @@ const Game = () => {
 
       return () => clearTimeout(timer);
     }
-  }, [isBlackTurn, board, isGameOver]);
+  }, [isBlackTurn, board, isGameOver, computerStrategy]);
 
   useEffect(() => {
     const blackMoves = getValidMoves(board, true);
