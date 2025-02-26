@@ -169,20 +169,31 @@ const Game = () => {
     <div className="game">
       <div className="status">
         {isGameOver ? (
-          <div>
-            <p>ゲーム終了</p>
+          <div className="game-over">
+            <p className="winner-text">ゲーム終了</p>
             <p>
-              最終スコア - 黒: {score.blackCount} / 白: {score.whiteCount}
+              最終スコア
               <br />
-              {score.blackCount > score.whiteCount
-                ? "黒の勝ち！"
-                : score.blackCount < score.whiteCount
-                ? "白の勝ち！"
-                : "引き分け！"}
+              黒: {score.blackCount} vs 白: {score.whiteCount}
+              <br />
+              <strong>
+                {score.blackCount > score.whiteCount
+                  ? "黒の勝利！ 🏆"
+                  : score.blackCount < score.whiteCount
+                  ? "白の勝利！ 🏆"
+                  : "引き分け！ 🤝"}
+              </strong>
             </p>
           </div>
         ) : (
-          `次は${isBlackTurn ? "黒" : "CPU（白）"}の番です`
+          <div>
+            {isBlackTurn ? "あなた" : "CPU"}の番です
+            <div style={{ fontSize: "0.8em", opacity: 0.8 }}>
+              {isBlackTurn
+                ? "置ける場所が緑色で表示されています"
+                : "CPUが考え中..."}
+            </div>
+          </div>
         )}
       </div>
 
