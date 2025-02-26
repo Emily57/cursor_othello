@@ -3,15 +3,18 @@ import { MaxCaptureStrategy } from "../strategies/ComputerStrategy";
 import "../styles/Game.css";
 
 const Game = () => {
-  const initialBoard = Array(8)
-    .fill()
-    .map(() => Array(8).fill(null));
-  initialBoard[3][3] = "white";
-  initialBoard[3][4] = "black";
-  initialBoard[4][3] = "black";
-  initialBoard[4][4] = "white";
+  const createInitialBoard = () => {
+    const board = Array(8)
+      .fill()
+      .map(() => Array(8).fill(null));
+    board[3][3] = "white";
+    board[3][4] = "black";
+    board[4][3] = "black";
+    board[4][4] = "white";
+    return board;
+  };
 
-  const [board, setBoard] = useState(initialBoard);
+  const [board, setBoard] = useState(createInitialBoard());
   const [isBlackTurn, setIsBlackTurn] = useState(true);
   const [isGameOver, setIsGameOver] = useState(false);
   const computerStrategy = new MaxCaptureStrategy();
@@ -140,12 +143,50 @@ const Game = () => {
     }
   }, [board]);
 
+  const calculateScore = (currentBoard) => {
+    let blackCount = 0;
+    let whiteCount = 0;
+
+    currentBoard.forEach((row) => {
+      row.forEach((cell) => {
+        if (cell === "black") blackCount++;
+        if (cell === "white") whiteCount++;
+      });
+    });
+
+    return { blackCount, whiteCount };
+  };
+
+  const resetGame = () => {
+    setBoard(createInitialBoard());
+    setIsBlackTurn(true);
+    setIsGameOver(false);
+  };
+
+  const score = calculateScore(board);
+
   return (
     <div className="game">
       <div className="status">
-        {isGameOver
-          ? "ゲーム終了"
-          : `次は${isBlackTurn ? "黒" : "CPU（白）"}の番です`}
+        {isGameOver ? (
+          <div>
+            <p>ゲーム終了</p>
+            <p>
+              最終スコア - 黒: {score.blackCount} / 白: {score.whiteCount}
+              {score.blackCount !== score.whiteCount && (
+                <span>
+                  （{score.blackCount > score.whiteCount ? "黒" : "白"}の勝ち）
+                </span>
+              )}
+            </p>
+          </div>
+        ) : (
+          `次は${isBlackTurn ? "黒" : "CPU（白）"}の番です`
+        )}
+      </div>
+      <div className="score-board">
+        <div>黒: {score.blackCount}</div>
+        <div>白: {score.whiteCount}</div>
       </div>
       <div className={`board ${isBlackTurn ? "black-turn" : "white-turn"}`}>
         {board.map((row, i) => (
@@ -162,6 +203,9 @@ const Game = () => {
           </div>
         ))}
       </div>
+      <button className="reset-button" onClick={resetGame}>
+        ゲームをリセット
+      </button>
     </div>
   );
 };
