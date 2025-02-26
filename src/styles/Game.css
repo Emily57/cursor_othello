@@ -51,6 +51,15 @@
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.2);
   position: absolute;
+}
+
+/* 黒の番の時の有効な手の表示 */
+.black-turn .cell.valid::before {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+/* 白の番の時の有効な手の表示 */
+.white-turn .cell.valid::before {
+  background: rgba(255, 255, 255, 0.5);
 }

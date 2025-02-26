@@ -106,7 +106,7 @@ const Game = () => {
   return (
     <div className="game">
       <div className="status">{`次は${isBlackTurn ? "黒" : "白"}の番です`}</div>
-      <div className="board">
+      <div className={`board ${isBlackTurn ? "black-turn" : "white-turn"}`}>
         {board.map((row, i) => (
           <div key={i} className="board-row">
             {row.map((cell, j) => (
