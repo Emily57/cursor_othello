@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/cursor_othello/static/css/main.f855e6bc.css",
-    "main.js": "/cursor_othello/static/js/main.67b842db.js",
+    "main.css": "/cursor_othello/static/css/main.b4bfbe0a.css",
+    "main.js": "/cursor_othello/static/js/main.d4016e65.js",
     "static/js/453.7ff41433.chunk.js": "/cursor_othello/static/js/453.7ff41433.chunk.js",
-    "static/media/logo.svg": "/cursor_othello/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/cursor_othello/index.html",
-    "main.f855e6bc.css.map": "/cursor_othello/static/css/main.f855e6bc.css.map",
-    "main.67b842db.js.map": "/cursor_othello/static/js/main.67b842db.js.map",
+    "main.b4bfbe0a.css.map": "/cursor_othello/static/css/main.b4bfbe0a.css.map",
+    "main.d4016e65.js.map": "/cursor_othello/static/js/main.d4016e65.js.map",
     "453.7ff41433.chunk.js.map": "/cursor_othello/static/js/453.7ff41433.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.67b842db.js"
+    "static/css/main.b4bfbe0a.css",
+    "static/js/main.d4016e65.js"
   ]
 }
