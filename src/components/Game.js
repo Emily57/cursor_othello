@@ -187,11 +187,8 @@ const Game = () => {
           </div>
         ) : (
           <div>
-            {isBlackTurn ? "あなた" : "CPU"}の番です
             <div style={{ fontSize: "0.8em", opacity: 0.8 }}>
-              {isBlackTurn
-                ? "置ける場所が緑色で表示されています"
-                : "CPUが考え中..."}
+              {isBlackTurn ? "あなたの番です" : "CPUが考え中..."}
             </div>
           </div>
         )}
