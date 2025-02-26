@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { MaxCaptureStrategy } from "../strategies/ComputerStrategy";
+import { AdvancedStrategy } from "../strategies/ComputerStrategy";
 import "../styles/Game.css";
 
 const Game = () => {
@@ -17,7 +17,7 @@ const Game = () => {
   const [board, setBoard] = useState(createInitialBoard());
   const [isBlackTurn, setIsBlackTurn] = useState(true);
   const [isGameOver, setIsGameOver] = useState(false);
-  const computerStrategy = new MaxCaptureStrategy();
+  const computerStrategy = new AdvancedStrategy();
 
   const getValidMoves = (board, isBlack) => {
     const validMoves = [];
@@ -173,21 +173,23 @@ const Game = () => {
             <p>ゲーム終了</p>
             <p>
               最終スコア - 黒: {score.blackCount} / 白: {score.whiteCount}
-              {score.blackCount !== score.whiteCount && (
-                <span>
-                  （{score.blackCount > score.whiteCount ? "黒" : "白"}の勝ち）
-                </span>
-              )}
+              <br />
+              {score.blackCount > score.whiteCount
+                ? "黒の勝ち！"
+                : score.blackCount < score.whiteCount
+                ? "白の勝ち！"
+                : "引き分け！"}
             </p>
           </div>
         ) : (
           `次は${isBlackTurn ? "黒" : "CPU（白）"}の番です`
         )}
       </div>
+
       <div className="score-board">
-        <div>黒: {score.blackCount}</div>
-        <div>白: {score.whiteCount}</div>
+        黒: {score.blackCount} / 白: {score.whiteCount}
       </div>
+
       <div className={`board ${isBlackTurn ? "black-turn" : "white-turn"}`}>
         {board.map((row, i) => (
           <div key={i} className="board-row">
@@ -203,6 +205,7 @@ const Game = () => {
           </div>
         ))}
       </div>
+
       <button className="reset-button" onClick={resetGame}>
         ゲームをリセット
       </button>
