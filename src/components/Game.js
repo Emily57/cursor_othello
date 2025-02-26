@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { MaxCaptureStrategy } from "../strategies/ComputerStrategy";
 import "../styles/Game.css";
 
 const Game = () => {
@@ -12,6 +13,8 @@ const Game = () => {
 
   const [board, setBoard] = useState(initialBoard);
   const [isBlackTurn, setIsBlackTurn] = useState(true);
+  const [isGameOver, setIsGameOver] = useState(false);
+  const computerStrategy = new MaxCaptureStrategy();
 
   const getValidMoves = (board, isBlack) => {
     const validMoves = [];
@@ -57,10 +60,16 @@ const Game = () => {
   };
 
   const makeMove = (row, col) => {
-    if (!isValidMove(row, col)) return;
+    if (!isValidMove(row, col) || !isBlackTurn) return;
 
-    const newBoard = board.map((row) => [...row]);
-    const currentColor = isBlackTurn ? "black" : "white";
+    const newBoard = executeMove(row, col, board, isBlackTurn);
+    setBoard(newBoard);
+    setIsBlackTurn(false);
+  };
+
+  const executeMove = (row, col, currentBoard, isBlack) => {
+    const newBoard = currentBoard.map((row) => [...row]);
+    const currentColor = isBlack ? "black" : "white";
     newBoard[row][col] = currentColor;
 
     const directions = [
@@ -93,8 +102,7 @@ const Game = () => {
       }
     }
 
-    setBoard(newBoard);
-    setIsBlackTurn(!isBlackTurn);
+    return newBoard;
   };
 
   const isValidMove = (row, col) => {
@@ -103,9 +111,42 @@ const Game = () => {
     );
   };
 
+  useEffect(() => {
+    if (!isBlackTurn && !isGameOver) {
+      const validMoves = getValidMoves(board, false);
+
+      if (validMoves.length === 0) {
+        setIsBlackTurn(true);
+        return;
+      }
+
+      const timer = setTimeout(() => {
+        const [row, col] = computerStrategy.selectMove(board, validMoves);
+        const newBoard = executeMove(row, col, board, false);
+        setBoard(newBoard);
+        setIsBlackTurn(true);
+      }, 1000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [isBlackTurn, board, isGameOver]);
+
+  useEffect(() => {
+    const blackMoves = getValidMoves(board, true);
+    const whiteMoves = getValidMoves(board, false);
+
+    if (blackMoves.length === 0 && whiteMoves.length === 0) {
+      setIsGameOver(true);
+    }
+  }, [board]);
+
   return (
     <div className="game">
-      <div className="status">{`次は${isBlackTurn ? "黒" : "白"}の番です`}</div>
+      <div className="status">
+        {isGameOver
+          ? "ゲーム終了"
+          : `次は${isBlackTurn ? "黒" : "CPU（白）"}の番です`}
+      </div>
       <div className={`board ${isBlackTurn ? "black-turn" : "white-turn"}`}>
         {board.map((row, i) => (
           <div key={i} className="board-row">
@@ -113,7 +154,7 @@ const Game = () => {
               <div
                 key={j}
                 className={`cell ${cell || ""} ${
-                  isValidMove(i, j) ? "valid" : ""
+                  isBlackTurn && isValidMove(i, j) ? "valid" : ""
                 }`}
                 onClick={() => makeMove(i, j)}
               />
